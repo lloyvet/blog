@@ -1,0 +1,35 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: blog
+  redis:
+    host: 123.56.166.69
+    port: 6379
+  thymeleaf:
+    cache: false
+  datasource: #数据源配置
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://123.56.166.69:3316/blog?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=UTC
+    username: root
+    password: 123456
+    druid:
+      max-active: 10
+      min-idle: 5
+      max-wait: 5000
+      initial-size: 5
+      validation-query: select 1
+      stat-view-servlet:
+        enabled: true
+        #        login-username: admin
+        #        login-password: admin
+        #        allow:
+        #        deny:
+        url-pattern: "/druid/*"
+      web-stat-filter:
+        enabled: true
+        url-pattern: "/druid/**"
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:mapper/*Mapper.xml

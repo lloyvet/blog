@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lloyvet.blog.mapper.ArticleTagMapper">
+  <resultMap id="BaseResultMap" type="com.lloyvet.blog.domain.ArticleTag">
+    <!--@mbg.generated-->
+    <!--@Table t_article_tag-->
+    <id column="article_id" jdbcType="BIGINT" property="articleId" />
+    <id column="tag_id" jdbcType="BIGINT" property="tagId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    article_id, tag_id
+  </sql>
+
+
+    <insert id="insertBatch">
+      insert into t_article_tag(<include refid="Base_Column_List"/>) values
+      <foreach collection="tagIdList" item="tagId" separator=",">
+        (#{id},#{tagId})
+      </foreach>
+    </insert>
+</mapper>
