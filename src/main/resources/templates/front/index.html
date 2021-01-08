@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width" />
+    <title>首页模板</title>
+    <link href="layui/css/layui.css" rel="stylesheet" type="text/css">
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="css/index_style.css" rel="stylesheet" type="text/css">
+    <link href="css/animate.min.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div id="menu" class="hover_animation menu_open" data-mark="false">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div id="navgation" class="navgation navgation_close">
+        <ul class="point">
+            <li><a href="#">首页</a></li>
+            <li><a th:href="@{/page/article}">博客</a></li>
+            <li><a href="message.html">留言</a></li>
+        </ul>
+        <div class="logo"><a>Mr.lloyvet</a></div>
+    </div>
+    <div class="section" id="section1">
+        <div class="fp-tablecell">
+            <div class="page1">
+                <div class="nav wow zoomIn" data-wow-duration="2s">
+                    <h1>lloyvet</h1>
+                    <p>where there's a waill there's a way kind of beautiful</p>
+                    <a class="layui-btn layui-btn-normal" style="margin-top: 20px" th:href="@{/page/article}">Enter Blog</a>
+                </div>
+                <a class="next wow fadeInUp" data-wow-duration="2s" id="next"></a>
+            </div>
+        </div>
+    </div>
+    <div class="section" id="section2">
+        <div class="fp-tablecell">
+            <div class="page2">
+                <div class="warp-box">
+                    <div class="new-article">
+                        <div class="inner wow fadeInDown" data-wow-delay=".2s">
+                            <h1>热门文章</h1>
+                            <p>
+                                刘妍婷isPig
+                                <br>刘妍婷isPig
+                            </p>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-col-xs12 layui-col-sm4 layui-col-md4  wow fadeInUp" style="padding: 0 10px" th:each="article : ${articles}">
+                            <div class="single-news">
+                                <div class="news-head">
+                                    <img src="image/1.jpg" th:src="${article.getCover()}">
+                                    <a href="#" class="link" th:href="@{'/article/read/'+${article.getId()}}"><i class="fa fa-link"></i></a>
+                                </div>
+                                <div class="news-content">
+                                    <h4>
+                                        <a th:href="@{'/article/read/'+${article.getId()}}" th:text="${article.getTitle()}">
+                                           标题
+                                        </a>
+                                    </h4>
+                                    <div class="date" th:text="${article.getTime()}">
+                                        <p >2017年2月16日</p>
+                                    </div>
+                                    <a th:href="@{'/article/read/'+${article.getId()}}" class="btn">
+                                        阅读更多
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+<!--                        <div class="layui-col-xs12 layui-col-sm4 layui-col-md4  wow fadeInUp" data-wow-delay=".2s" style="padding: 0 10px">-->
+<!--                            <div class="single-news">-->
+<!--                                <div class="news-head">-->
+<!--                                    <img src="image/1.jpg">-->
+<!--                                    <a href="#" class="link"><i class="fa fa-link"></i></a>-->
+<!--                                </div>-->
+<!--                                <div class="news-content">-->
+<!--                                    <h4>-->
+<!--                                        <a href="#">-->
+<!--                                            标题-->
+<!--                                        </a>-->
+<!--                                    </h4>-->
+<!--                                    <div class="date">-->
+<!--                                        2017年2月16日-->
+<!--                                    </div>-->
+<!--                                    <p>-->
+<!--                                        很想给你写封信,告诉你这里的天气. 昨夜的那场电影,还有我的心情.-->
+<!--                                    </p>-->
+<!--                                    <a href="#" class="btn">-->
+<!--                                        阅读更多-->
+<!--                                    </a>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="layui-col-xs12 layui-col-sm4 layui-col-md4  wow fadeInUp" data-wow-delay=".4s" style="padding: 0 10px">-->
+<!--                            <div class="single-news">-->
+<!--                                <div class="news-head">-->
+<!--                                    <img src="image/1.jpg">-->
+<!--                                    <a href="#" class="link"><i class="fa fa-link"></i></a>-->
+<!--                                </div>-->
+<!--                                <div class="news-content">-->
+<!--                                    <h4>-->
+<!--                                        <a href="#">-->
+<!--                                            标题-->
+<!--                                        </a>-->
+<!--                                    </h4>-->
+<!--                                    <div class="date">-->
+<!--                                        2017年2月16日-->
+<!--                                    </div>-->
+<!--                                    <p>-->
+<!--                                        很想给你写封信,告诉你这里的天气. 昨夜的那场电影,还有我的心情.-->
+<!--                                    </p>-->
+<!--                                    <a href="#" class="btn">-->
+<!--                                        阅读更多-->
+<!--                                    </a>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section" id="section3">
+        <div class="fp-tablecell">
+            <div class="page3">
+                <div class="warp-box">
+                    <div class="warp">
+                        <div class="inner">
+                            <div class="links">
+                                <ul>
+                                    <li class="wow fadeInLeft"><a href="#">关于</a></li>
+                                    <li class="wow fadeInRight"><a href="#">+友情链接</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer wow fadeInUp" id="contact">
+        <div class="footer-top">
+            <div class="container">
+                <div class="layui-row">
+                    <div class="layui-col-xs12 layui-col-sm6 layui-col-md4">
+                        <div class="single-widget about">
+                            <div class="footer-logo">
+                                <h2>lloyvet</h2>
+                            </div>
+                            <p>where there's a waill there's a way kind of beautiful</p>
+                            <div class="button">
+                                <a href="#" class="btn layui-btn layui-btn-normal">About Me</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-xs12 layui-col-sm6 layui-col-md4">
+                        <div class="single-widget">
+                            <h2>相关链接</h2>
+                            <ul class="social-icon">
+                                <li class="active"><a href="#"><i class="fa fa-book"></i>博文</a></li>
+                                <li class="active"><a href="#"><i class="fa fa-comments"></i>留言</a></li>
+                                <li class="active"><a href="#"><i class="fa fa-share"></i>资源</a></li>
+                                <li class="active"><a href="#"><i class="fa fa-snowflake-o"></i>日记</a></li>
+                                <li class="active"><a href="#"><i class="fa fa-files-o"></i>归档</a></li>
+                            </ul>                   
+                        </div>
+                    </div>
+                    <div class="layui-col-xs12 layui-col-sm12 layui-col-md4">
+                        <div class="single-widget contact">
+                            <h2>联系我</h2>
+                            <ul class="list">
+                                <li><i class="fa fa-map"></i>地址: 陕西省西安市未央区XATU</li>
+                                <li><i class="fa fa-qq"></i>QQ: 1924143976 </li>
+                                <li><i class="fa fa-envelope"></i>邮箱: 1924143976@qq.com</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <div class="container">
+                <div class="layui-row">
+                    <div class="layui-col-xs12 layui-col-sm12 layui-col-md12 text-center">
+                        <p>Copyright &copy; 2020-2020 llovet All Rights Reserved </p>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </footer>
+    <script src="layui/layui.js"></script>
+    <script src="js/wow.min.js"></script>
+    <script src="js/index.js"></script>
+</body>
+</html>

@@ -56,4 +56,11 @@ public class Constant {
      */
     public static final Long COMMENT_LINKED_LIST_ROOT = 0L;
 
+    public static final Byte SUCCESS = 1;
+
+    public static final Integer FAILURE = 0;
+
+    public static final String REGION = "内网IP|内网IP";
+
+
 }

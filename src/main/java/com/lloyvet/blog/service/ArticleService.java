@@ -46,4 +46,11 @@ public interface ArticleService extends IService<Article>{
      * @param idList
      */
     void removeBatchByArticleAndTag(List<Integer> idList);
+
+    /**
+     * 获取热门文章
+     * @return
+     */
+    List<Article> selectHotArticle();
+
 }

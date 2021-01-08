@@ -136,6 +136,9 @@ public class Article implements Serializable {
     @TableField(value = "create_time")
     private Date createTime;
 
+    @TableField(exist = false)
+    private String time;
+
     /**
      * 更新时间
      */

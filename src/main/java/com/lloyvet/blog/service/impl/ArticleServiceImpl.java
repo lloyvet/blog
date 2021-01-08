@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -162,5 +163,14 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         QueryWrapper<ArticleTag> qw = new QueryWrapper<>();
         qw.in("article_id",idList);
         articleTagMapper.delete(qw);
+    }
+
+    @Override
+    public List<Article> selectHotArticle() {
+        Page<Article> page = new Page<>(0,3);
+        QueryWrapper<Article> qw = new QueryWrapper<>();
+        qw.orderByDesc(Article.COL_VIEWS);
+        articleMapper.selectPage(page,qw);
+        return page.getRecords();
     }
 }
