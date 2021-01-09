@@ -71,4 +71,16 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
         qw.in("id",ids);
         return tagMapper.selectList(qw);
     }
+
+    @Override
+    public List<Tag> listByArticleCount() {
+        List<Tag> tags = this.list();
+        for (Tag tag : tags) {
+            Integer count = articleTagMapper.selectCount(new QueryWrapper<ArticleTag>().eq("tag_id", tag.getId()));
+                tag.setArticleCount(count);
+        }
+        tags = tags.stream().filter(tag ->
+            tag.getArticleCount()!=0).collect(Collectors.toList());
+        return tags;
+    }
 }

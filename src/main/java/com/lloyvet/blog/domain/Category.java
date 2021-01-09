@@ -6,10 +6,13 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 @Data
 @TableName(value = "t_category")
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Category implements Serializable {
     /**
      * ID
@@ -46,6 +49,9 @@ public class Category implements Serializable {
      */
     @TableField(value = "update_time")
     private Date updateTime;
+
+    @TableField(exist = false)
+    private Integer articleCount;
 
     private static final long serialVersionUID = 1L;
 

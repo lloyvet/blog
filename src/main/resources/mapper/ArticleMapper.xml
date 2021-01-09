@@ -14,7 +14,6 @@
     <result column="views" jdbcType="INTEGER" property="views" />
     <result column="likes" jdbcType="INTEGER" property="likes" />
     <result column="comments" jdbcType="INTEGER" property="comments" />
-    <result column="appreciable" jdbcType="BIT" property="appreciable" />
     <result column="commentable" jdbcType="BIT" property="commentable" />
     <result column="top" jdbcType="BIT" property="top" />
     <result column="recommend" jdbcType="BIT" property="recommend" />
@@ -26,10 +25,37 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
+  <resultMap id="articleSetCategory" type="com.lloyvet.blog.domain.Article">
+    <id property="id" column="id"/>
+    <result property="title" column="title"/>
+    <result property="summary" column="summary"/>
+    <result property="cover" column="cover"/>
+    <result property="createTime" column="create_time"/>
+    <association property="category" javaType="com.lloyvet.blog.domain.Category">
+      <id property="id" column="id"/>
+      <result property="name" column="name"/>
+    </association>
+  </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, title, summary, content, text_content, cover, `type`, views, likes, comments, 
-    appreciable, commentable, `top`, recommend, published, sort, author_id, category_id, 
+    commentable, `top`, recommend, published, sort, author_id, category_id,
     `status`, create_time, update_time
   </sql>
+    <select id="selectByDate" resultType="com.lloyvet.blog.to.ArticleDateTo">
+      select year(create_time) 'year', month(create_time) 'month', day(create_time) 'day'
+      , count(id) 'articleCount'
+      from t_article
+      where create_time >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
+      and published = 1 and status = 2
+      group by year(create_time)  ,month(create_time) , day(create_time)
+    </select>
+  <select id="selectArticleAndSetCategory"  resultMap="articleSetCategory">
+    SELECT ta.id,title,summary,cover,ta.create_time,tc.id,tc.name
+    FROM t_article ta
+    LEFT JOIN t_category tc
+    ON ta.category_id = tc.id
+    ORDER BY #{condition} DESC
+    LIMIT #{limit},#{size}
+  </select>
 </mapper>

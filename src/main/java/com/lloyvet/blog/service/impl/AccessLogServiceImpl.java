@@ -57,7 +57,7 @@ public class AccessLogServiceImpl extends ServiceImpl<AccessLogMapper, AccessLog
                 e.printStackTrace();
             }
         }
-        log.setAddress(StringUtils.getCityInfo(log.getRequestIp()));
+        log.setAddress("");
         log.setMethod(methodName);
         log.setUsername(userName);
         log.setParams(params.toString() + " }");

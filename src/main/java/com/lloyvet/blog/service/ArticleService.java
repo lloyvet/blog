@@ -1,8 +1,11 @@
 package com.lloyvet.blog.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lloyvet.blog.common.TableResult;
 import com.lloyvet.blog.domain.Article;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.lloyvet.blog.to.ArticleDateTo;
+import com.lloyvet.blog.to.HomeTo;
 import com.lloyvet.blog.vo.ArticleAuditVo;
 import com.lloyvet.blog.vo.ArticleVo;
 
@@ -53,4 +56,61 @@ public interface ArticleService extends IService<Article>{
      */
     List<Article> selectHotArticle();
 
+    /**
+     * 通过文章id查询文章
+     * @param id
+     * @return
+     */
+    Article getArticleById(Long id);
+
+    /**
+     * 点赞文章
+     * @param id
+     */
+    void incrLikes(Long id);
+
+    /**
+     * 通过标签查询文章
+     * @param current
+     * @param size
+     * @param id
+     * @return
+     */
+    Page<Article> listPreviewPageByTagId(Integer current, Integer size, Long id);
+
+    /**
+     * 根据日期统计文章数量
+     * @return
+     */
+    List<ArticleDateTo> getCountByDate();
+
+
+    /**
+     * 查询推荐文章列表
+     * @return
+     */
+    List<Article> listRecommend();
+
+    /**
+     * 分页查询所有文章
+     *
+     * @param current 当前页码
+     * @param size    页码大小
+     * @return 文章列表
+     */
+    Page<Article> listPreviewByPage(Integer current, Integer size);
+
+    /**
+     * 通过keyWord查询文章
+     * @param keyWord
+     * @return
+     */
+    List<Article> selectListByKeyWord(String keyWord);
+
+
+    /**
+     * 获取首页资源
+     * @return
+     */
+    HomeTo getIndexArticle();
 }

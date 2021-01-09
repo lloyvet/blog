@@ -200,7 +200,7 @@
                     </a>
                 </li>
                 <li class="hide-on-med-and-down nav-item">
-                    <a class="waves-effect waves-light" th:href="@{/page/tags}">
+                    <a class="waves-effect waves-light" th:href="@{/page/tag}">
                         <i class="fas fa-tags" style="zoom: 0.6;"></i>
                         <span>标签</span>
                     </a>
@@ -223,12 +223,6 @@
                         <span>关于</span>
                     </a>
                 </li>
-                <li class="hide-on-med-and-down nav-item">
-                    <a class="waves-effect waves-light" th:href="@{/page/friends}">
-                        <i class="fas fa-comment" style="zoom: 0.6;"></i>
-                        <span>友情链接</span>
-                    </a>
-                </li>
                 <li>
                     <a class="modal-trigger waves-effect waves-light" href="#searchModal" id="searchBtn">
                         <i class="fas fa-search" id="searchIcon" style="zoom: 0.85;" title="搜索"></i>
@@ -241,7 +235,6 @@
                 <div class="mobile-head bg-color">
                     <div class="logo-name" style="margin-top: 10px">LloyvetBlog</div>
                     <div class="logo-desc">
-                        热爱编程，热爱生活
                     </div>
                 </div>
                 <!--侧边导航菜单-->
@@ -250,7 +243,7 @@
                         <a class="waves-effect waves-light" th:href="@{/}"><i class="fa-fw fas fa-home"></i>首页</a>
                     </li>
                     <li class="m-nav-item">
-                        <a class="waves-effect waves-light" th:href="@{/page/tags}"><i
+                        <a class="waves-effect waves-light" th:href="@{/page/tag}"><i
                                 class="fa-fw fas fa-tags"></i>标签</a>
                     </li>
                     <li class="m-nav-item">
@@ -265,10 +258,6 @@
                         <a class="waves-effect waves-light" th:href="@{/page/about}"><i
                                 class="fa-fw fas fa-paper-plane"></i>关于</a>
                     </li>
-                    <li class="m-nav-item">
-                        <a class="waves-effect waves-light" th:href="@{/page/friends}"><i
-                                class="fa-fw fas fa-comment"></i>友情链接</a>
-                    </li>
                     <li>
                         <div class="divider"></div>
                     </li>
@@ -277,7 +266,7 @@
         </div>
         <!--github-corner-->
         <a class="github-corner tooltipped hide-on-med-and-down" data-delay="50" data-position="left"
-           data-tooltip="Fork Me" href="https://github.com/AlanLiang1998" target="_blank">
+           data-tooltip="Fork Me" href="https://github.com/lloyvet" target="_blank">
             <svg aria-hidden="true" viewbox="0 0 250 250">
                 <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
                 <path class="octo-arm"
@@ -339,16 +328,16 @@
         <div class="col s12 m4 l4 social-link social-statis">
             <!--联系图标-->
             <a class="tooltipped" data-delay="50" data-position="top" data-tooltip="访问我的GitHub"
-               href="https://github.com/AlanLiang1998"
+               href="https://github.com/lloyvet"
                target="_blank">
                 <i class="fab fa-github"></i>
             </a>
             <a class="tooltipped" data-delay="50" data-position="top" data-tooltip="邮件联系我"
-               href="mailto:1114173646@qq.com" target="_blank">
+               href="mailto:1924143976@qq.com" target="_blank">
                 <i class="fas fa-envelope-open"></i>
             </a>
-            <a class="tooltipped" data-delay="50" data-position="top" data-tooltip="QQ联系我: 1656927346"
-               href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1114173646" target="_blank">
+            <a class="tooltipped" data-delay="50" data-position="top" data-tooltip="QQ联系我: 1924143976"
+               href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1924143976" target="_blank">
                 <i class="fab fa-qq"></i>
             </a>
         </div>
@@ -371,7 +360,7 @@
             <div id="searchResult">
                 <ul class="search-result-list" v-if="searchResult.length > 0">
                     <li v-for="item in searchResult" :key="item.id">
-                        <a :href="'/article/'+item.id" class="search-result-title" v-html="item.title"></a>
+                        <a :href="'/article/read/'+item.id" class="search-result-title" v-html="item.title"></a>
                         <p class="search-result" v-html="item.summary"></p>
                         <p class="search-result" v-html="item.content"></p>
                     </li>
@@ -415,7 +404,7 @@
                         return false;
                     }
                     axios({
-                        url: '/articles/search?keyword=' + keyword,
+                        url: '/article/search?keyWord=' + keyword,
                         method: 'GET',
                         headers: {
                             'X-Requested-With': 'XMLHttpRequest'

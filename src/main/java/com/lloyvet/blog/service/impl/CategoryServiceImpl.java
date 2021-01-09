@@ -6,12 +6,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lloyvet.blog.common.TableResult;
 import com.lloyvet.blog.domain.Article;
 import com.lloyvet.blog.mapper.ArticleMapper;
-import com.lloyvet.blog.service.ArticleService;
 import com.lloyvet.blog.to.CategoryTo;
 import com.lloyvet.blog.vo.CategoryVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import javax.annotation.Resource;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,6 +54,29 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
             }).collect(Collectors.toList());
         }
         return TableResult.tableOk(categoryTos,Integer.parseInt(String.valueOf(categoryPage.getTotal())));
+    }
+
+    @Override
+    public List<Category> listByArticleCount() {
+        List<Category> categories = this.list();
+        for (Category category : categories) {
+            Integer articleCount = articleMapper.selectCount(new QueryWrapper<Article>().eq("category_id", category.getId()));
+            category.setArticleCount(articleCount);
+        }
+        categories = categories.stream().filter(category -> category.getArticleCount()!=0).collect(Collectors.toList());
+        return categories;
+    }
+
+    @Override
+    public Page<Article> listPreviewPageByTagId(Integer current, Integer size, Long id) {
+        Page<Article> page = new Page<>(current, size);
+        QueryWrapper<Article> qw = new QueryWrapper<>();
+        qw.eq("category_id",id).orderByDesc("create_time");
+        articleMapper.selectPage(page,qw);
+        for (Article article : page.getRecords()) {
+            article.setCategory(categoryMapper.selectById(id));
+        }
+        return page;
     }
 }
 

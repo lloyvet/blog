@@ -72,14 +72,14 @@
                                 <span class="name">分类</span>
                             </div>
                             <div class="statis">
-                                <span class="count"><a href="/page/tags">{{tagCount}}</a></span>
+                                <span class="count"><a href="/page/tag">{{tagCount}}</a></span>
                                 <span class="name">标签</span>
                             </div>
                         </div>
                         <div class="col s12 m12 l4">
                             <div class="profile center-align">
                                 <div class="avatar">
-                                    <img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1701474507,2833806157&fm=26&gp=0.jpg"
+                                    <img src="http://prom5oysi.bkt.clouddn.com/pscbg.jpg"
                                          class="circle responsive-img avatar-img">
                                 </div>
                                 <div class="author">
@@ -271,9 +271,6 @@
             getAboutData: function () {
                 axios({
                     url: '/about',
-                    params: {
-                        dateType: 2,
-                    },
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest'
                     },
@@ -283,12 +280,6 @@
                     this.articleCount = aboutData.articleCount;
                     this.categoryCount = aboutData.categoryCount;
                     this.tagCount = aboutData.tagCount;
-                    this.aboutData = aboutData.aboutData;
-                    this.categories = aboutData.categories;
-                    this.tags = aboutData.tags;
-                    this.articleDates = aboutData.articleDates;
-                    this.photos = aboutData.photos;
-
                     this.$nextTick(function () {
                         this.initCharts();
                         lazyLoadInstance.update();

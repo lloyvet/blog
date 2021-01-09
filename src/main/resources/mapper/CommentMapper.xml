@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lloyvet.blog.mapper.CommentMapper">
+  <resultMap id="BaseResultMap" type="com.lloyvet.blog.domain.Comment">
+    <!--@mbg.generated-->
+    <!--@Table t_comment-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="pid" jdbcType="BIGINT" property="pid" />
+    <result column="article_id" jdbcType="BIGINT" property="articleId" />
+    <result column="visitor_id" jdbcType="BIGINT" property="visitorId" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+    <result column="status" jdbcType="BOOLEAN" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="parent_nickname" jdbcType="VARCHAR" property="parentNickname" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, pid, article_id, visitor_id, content, `status`, create_time, address, parent_nickname
+  </sql>
+</mapper>

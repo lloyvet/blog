@@ -2,7 +2,7 @@
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta th:include="front/fragments :: head(~{::title})">
-    <title>分类 | GeekBlog</title>
+    <title>分类 | LloyvetBlog</title>
     <style type="text/css">
         #category-radar {
             width: 100%;
@@ -21,7 +21,7 @@
     <script>
         $(function () {
             var typed = new Typed("#subtitle", {
-                strings: ['挑战无处不在，自己才是真正的敌人。', 'Challenges are everywhere, and you are the real enemy.'],
+                strings: ['where there’s a will there‘s a way kind of beautiful'],
                 startDelay: 300,
                 typeSpeed: 100,
                 loop: true,
@@ -159,7 +159,7 @@
         methods: {
             getCategories: function () {
                 axios({
-                    url: '/categories',
+                    url: '/category',
                     method: 'GET',
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest'

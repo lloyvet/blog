@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 /**
@@ -15,6 +16,7 @@ import lombok.Data;
  */
 @Data
 @TableName(value = "t_article")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Article implements Serializable {
     /**
      * ID
@@ -77,12 +79,6 @@ public class Article implements Serializable {
     private Integer comments;
 
     /**
-     * 开启赞赏
-     */
-    @TableField(value = "appreciable")
-    private Boolean appreciable;
-
-    /**
      * 开启评论
      */
     @TableField(value = "commentable")
@@ -123,6 +119,9 @@ public class Article implements Serializable {
      */
     @TableField(value = "category_id")
     private Long categoryId;
+
+    @TableField(exist = false)
+    private Category category;
 
     /**
      * 审核状态[0:审核未过, 1:等待审核, 2:审核通过]

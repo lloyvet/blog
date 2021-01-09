@@ -16,14 +16,34 @@
 </head>
 <body>
 <form class="layui-form layuimini-form">
-    <div class="layui-form-item">
-        <label class="layui-form-label required">照片url</label>
-        <div class="layui-input-block">
-            <input type="url" name="url" lay-verify="required|url" lay-reqtext="照片url不能为空" placeholder="请输入照片url"
-                   value=""
-                   class="layui-input">
+<!--    <div class="layui-form-item">-->
+<!--        <label class="layui-form-label required">照片</label>-->
+<!--        <div class="layui-input-block">-->
+<!--            <input type="url" name="url" lay-verify="required|url" lay-reqtext="照片url不能为空" placeholder="请输入照片url"-->
+<!--                   value=""-->
+<!--                   class="layui-input">-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="layui-form-item layui-upload-form">-->
+<!--        <div class="layui-upload-list">-->
+<!--            <input type="hidden" name="imgUrl" id="imgUrl">-->
+<!--            <img class="layui-upload-img  imgUp " width="80px" height="80px" id="imgUp">-->
+<!--            <p id="resultText"></p>-->
+<!--        </div>-->
+<!--        <button type="button" class="layui-btn imgUp" id="uploadImg">-->
+<!--            <i class="layui-icon">&#xe67c;</i>上传图片-->
+<!--        </button>-->
+<!--    </div>-->
+    <div class="layui-upload-drag" id="uploadImg">
+        <i class="layui-icon"></i>
+        <p>点击上传，或将文件拖拽到此处</p>
+        <div class="layui-hide" id="uploadDemoView">
+            <hr>
+            <input type="hidden" name="url" id="imgUrl">
+            <img src="" alt="上传成功后渲染" id="imgUp" style="max-width: 196px">
         </div>
     </div>
+
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label required">简介</label>
         <div class="layui-input-block">
@@ -55,11 +75,38 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
 <script>
-    layui.use(['form'], function () {
+    layui.use(['form','upload'], function () {
         var form = layui.form,
             layer = layui.layer,
+            upload = layui.upload,
             $ = layui.$;
 
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#uploadImg' //绑定元素
+            ,url: '/oss/policy' //上传接口
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#imgUp').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                console.log(res.data);
+                //如果上传失败
+                if(res.code != 200){
+                    return layer.msg('上传失败');
+                }
+                layer.msg('上传成功');
+                document.getElementById("imgUrl").value=res.data;
+                layui.$('#uploadDemoView').removeClass('layui-hide');
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                layer.msg('上传失败');
+                uploadInst.upload();
+            }
+        });
         //自定义验证规则
         form.verify({
             description: function (value) {

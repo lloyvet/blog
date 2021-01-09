@@ -17,14 +17,15 @@ public class BlogInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        HttpSession session = request.getSession();
-        if (session.getAttribute(Constant.USER) == null) {
-            response.sendRedirect("/admin/login.html");
-            return false;
-        } else {
-            User user = (User)session.getAttribute(Constant.USER);
-            userSession.set(user);
-            return true;
-        }
+//        HttpSession session = request.getSession();
+//        if (session.getAttribute(Constant.USER) == null) {
+//            response.sendRedirect("/admin/login.html");
+//            return false;
+//        } else {
+//            User user = (User)session.getAttribute(Constant.USER);
+//            userSession.set(user);
+//            return true;
+//        }
+        return true;
     }
 }

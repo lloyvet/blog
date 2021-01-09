@@ -2,13 +2,13 @@
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta th:include="front/fragments :: head(~{::title})">
-    <title>归档 | GeekBlog</title>
+    <title>归档 | LloyvetBlog</title>
     <!--打字机效果-->
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11"></script>
     <script>
         $(function () {
             var typed = new Typed("#subtitle", {
-                strings: ['挑战无处不在，自己才是真正的敌人。', 'Challenges are everywhere, and you are the real enemy.'],
+                strings: ['where there’s a will there‘s a way kind of beautiful'],
                 startDelay: 300,
                 typeSpeed: 100,
                 loop: true,
@@ -32,11 +32,7 @@
 <div id="app">
     <!--content-->
     <main class="content">
-        <div class="container archive-calendar">
-            <div class="card">
-                <div id="post-calendar" class="card-content"></div>
-            </div>
-        </div>
+
 
         <div id="cd-timeline" class="container">
             <div class="cd-timeline-block" v-for="(article, index) in articles" :key="article.id">
@@ -52,10 +48,10 @@
                 <article class="cd-timeline-content" data-aos="fade-up">
                     <div class="article col s12 m6">
                         <div class="card">
-                            <a :href="'/article/'+article.id">
+                            <a :href="'/article/read/'+article.id">
                                 <div class="card-image">
-                                    <img class="responsive-img lazy" src="http://cdn.alanliang.site/loading.png"
-                                         :data-src="article.cover">
+                                    <img class="responsive-img lazy"
+                                         :src="article.cover" >
                                     <span class="card-title">{{article.title}}</span>
                                 </div>
                             </a>
@@ -71,7 +67,7 @@
                                 </div>
                             </div>
                             <div class="card-action article-tags">
-                                <a :href="'/page/tags?id='+tag.id" v-for="(tag, index) in article.tagList"><span
+                                <a :href="'/page/tag?id='+tag.id" v-for="(tag, index) in article.tagList"><span
                                         class="chip bg-color">{{tag.name}}</span></a>
                             </div>
                         </div>

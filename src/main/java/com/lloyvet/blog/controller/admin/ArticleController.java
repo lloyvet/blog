@@ -33,7 +33,6 @@ public class ArticleController {
     @PostMapping("/save")
     public ResultObj save(@RequestBody Article article){
         article.setComments(0);
-        article.setAppreciable(article.getAppreciable() != null);
         article.setCommentable(article.getCommentable() != null);
         article.setTop(article.getTop() != null);
         article.setRecommend(article.getRecommend() != null);
@@ -93,7 +92,6 @@ public class ArticleController {
 
     @PutMapping("/update")
     public ResultObj updateArticle(@RequestBody Article article){
-        article.setAppreciable(article.getAppreciable() != null);
         article.setCommentable(article.getCommentable() != null);
         article.setTop(article.getTop() != null);
         article.setRecommend(article.getRecommend() != null);

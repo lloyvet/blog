@@ -11,12 +11,16 @@ import com.lloyvet.blog.domain.Tag;
 import com.lloyvet.blog.mapper.ArticleTagMapper;
 import com.lloyvet.blog.mapper.CategoryMapper;
 import com.lloyvet.blog.mapper.TagMapper;
+import com.lloyvet.blog.to.ArticleDateTo;
 import com.lloyvet.blog.to.ArticleTo;
+import com.lloyvet.blog.to.HomeTo;
 import com.lloyvet.blog.vo.ArticleAuditVo;
 import com.lloyvet.blog.vo.ArticleVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -39,6 +43,7 @@ import org.springframework.util.StringUtils;
  */
 
 
+@Slf4j
 @Service
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService{
 
@@ -169,8 +174,139 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     public List<Article> selectHotArticle() {
         Page<Article> page = new Page<>(0,3);
         QueryWrapper<Article> qw = new QueryWrapper<>();
-        qw.orderByDesc(Article.COL_VIEWS);
+        qw.orderByDesc(Article.COL_VIEWS).select(Article.COL_ID,Article.COL_TITLE,Article.COL_SUMMARY,Article.COL_COVER);
         articleMapper.selectPage(page,qw);
         return page.getRecords();
+    }
+
+    @Override
+    public Article getArticleById(Long id) {
+        Article article = articleMapper.selectById(id);
+        //分类
+        Category category = categoryMapper.selectById(article.getCategoryId());
+        article.setCategory(category);
+        //标签
+        List<Long> tagIds = articleTagMapper.selectList(new QueryWrapper<ArticleTag>()
+                .eq("article_id", article.getId())).stream().map(ArticleTag::getTagId).collect(Collectors.toList());
+        List<Tag> tags = tagMapper.selectList(new QueryWrapper<Tag>().in("id", tagIds));
+        article.setTagList(tags);
+        //增加浏览量
+        incrViewById(id);
+        return article;
+    }
+
+    @Override
+    public void incrLikes(Long id) {
+        Article article = articleMapper.selectById(id);
+        article.setLikes(article.getLikes()+1);
+        articleMapper.updateById(article);
+    }
+
+    @Override
+    public Page<Article> listPreviewPageByTagId(Integer current, Integer size, Long id) {
+        Page<Article> page = new Page<>(current, size);
+        List<ArticleTag> articleTags = articleTagMapper.selectList(new QueryWrapper<ArticleTag>().eq("tag_id", id));
+        List<Long> articleIds = articleTags.stream().map(ArticleTag::getArticleId).collect(Collectors.toList());
+        QueryWrapper<Article> qw = new QueryWrapper<>();
+        qw.in("id",articleIds).orderByDesc("create_time");
+        articleMapper.selectPage(page,qw);
+        List<Article> articles = page.getRecords();
+        for (Article article : articles) {
+            article.setCategory(categoryMapper.selectById(article.getCategoryId()));
+        }
+        return page;
+    }
+
+    @Override
+    public List<ArticleDateTo> getCountByDate() {
+        return articleMapper.selectByDate();
+    }
+
+    @Override
+    public List<Article> listRecommend() {
+        //通过likes排序
+        return articleMapper.selectArticleAndSetCategory("likes",0,4);
+    }
+
+    @Override
+    public Page<Article> listPreviewByPage(Integer current, Integer size) {
+        Page<Article> articlePage = new Page<>(current, size);
+        articlePage.setTotal(this.count());
+        List<Article> articles = articleMapper.selectArticleAndSetCategory("create_time", (current-1)*size, size);
+        for (Article article : articles) {
+            //标签
+            List<Long> tagIds = articleTagMapper.selectList(new QueryWrapper<ArticleTag>()
+                    .eq("article_id", article.getId())).stream().map(ArticleTag::getTagId).collect(Collectors.toList());
+            List<Tag> tags = tagMapper.selectList(new QueryWrapper<Tag>().in("id", tagIds));
+            article.setTagList(tags);
+        }
+        articlePage.setRecords(articles);
+        return articlePage;
+    }
+
+    @Override
+    public List<Article> selectListByKeyWord(String keyWord) {
+        QueryWrapper<Article> qw = new QueryWrapper<>();
+        qw.like("title",keyWord).or().like("content",keyWord)
+        .select(Article.COL_ID,Article.COL_TITLE,Article.COL_SUMMARY,Article.COL_CONTENT);
+        List<Article> articles = articleMapper.selectList(qw);
+        for (Article article : articles) {
+            article.setContent(new StringBuilder(article.getContent()).substring(0,300));
+        }
+        return articles;
+    }
+
+    @Override
+    public HomeTo getIndexArticle() {
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String format = sdf.format(date);
+        HomeTo homeTo = new HomeTo();
+        CompletableFuture<Void> task1 = CompletableFuture.runAsync(() -> {
+            homeTo.setTopArticles(this.selectHotArticle());
+        }, poolExecutor);
+        CompletableFuture<Void> task2 = CompletableFuture.runAsync(() -> {
+            homeTo.setRecommendArticles(this.listRecommend());
+        }, poolExecutor);
+        CompletableFuture<Void> task3 = CompletableFuture.runAsync(() -> {
+            homeTo.setPageInfo(this.listPreviewByPage(1, 6));
+        }, poolExecutor);
+        try {
+            CompletableFuture.allOf(task1,task2,task3).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        date = new Date();
+        log.info(format);
+        String format1 = sdf.format(date);
+        log.info(format1);
+        return homeTo;
+    }
+
+
+    /**
+     * 增加浏览量
+     * @param id
+     */
+    private void incrViewById(Long id) {
+        Article article = articleMapper.selectById(id);
+        article.setViews(article.getViews()+1);
+        articleMapper.updateById(article);
+    }
+
+    /**
+     * 设置文章分类和标签
+     * @param articles
+     */
+    public void articleSetCategoryAndTag(List<Article> articles){
+        for (Article article : articles) {
+            //分类
+            article.setCategory(categoryMapper.selectById(article.getCategoryId()));
+            //标签
+            List<Long> tagIds = articleTagMapper.selectList(new QueryWrapper<ArticleTag>()
+                    .eq("article_id", article.getId())).stream().map(ArticleTag::getTagId).collect(Collectors.toList());
+            List<Tag> tags = tagMapper.selectList(new QueryWrapper<Tag>().in("id", tagIds));
+            article.setTagList(tags);
+        }
     }
 }

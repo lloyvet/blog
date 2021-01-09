@@ -34,4 +34,11 @@ public interface TagService extends IService<Tag>{
      * @return
      */
     List<Tag> listTagByArticleId(Long id);
+
+    /**
+     * 获取标签
+     * @return
+     */
+    List<Tag> listByArticleCount();
+
 }

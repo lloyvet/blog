@@ -2,7 +2,7 @@
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta th:include="front/fragments :: head(~{::title})">
-    <title>标签 | GeekBlog</title>
+    <title>标签 | LloyvetBlog</title>
     <link rel="stylesheet" type="text/css" href="/static/front/css/jqcloud.css"/>
     <style type="text/css">
         #tag-wordcloud {
@@ -16,7 +16,7 @@
     <script>
         $(function () {
             var typed = new Typed("#subtitle", {
-                strings: ['挑战无处不在，自己才是真正的敌人。', 'Challenges are everywhere, and you are the real enemy.'],
+                strings: ['where there’s a will there‘s a way kind of beautiful'],
                 startDelay: 300,
                 typeSpeed: 100,
                 loop: true,
@@ -168,7 +168,7 @@
         methods: {
             getTags: function () {
                 axios({
-                    url: '/tags',
+                    url: '/tag',
                     method: 'GET',
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest'
