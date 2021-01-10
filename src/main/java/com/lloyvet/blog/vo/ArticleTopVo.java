@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 
 @Data
-public class ArticleAuditVo implements Serializable {
+public class ArticleTopVo implements Serializable {
 
     /**
      *文章id
@@ -19,9 +19,4 @@ public class ArticleAuditVo implements Serializable {
     @NotNull
     private Long id;
 
-    /**
-     *审核状态[0:审核未过, 2:等待审核, 3:审核通过
-     */
-    @NotNull
-    private Byte status;
 }

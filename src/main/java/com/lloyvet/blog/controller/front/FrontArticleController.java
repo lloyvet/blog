@@ -32,7 +32,7 @@ public class FrontArticleController {
     public String getArticleById(@PathVariable("id") Long id, Model model){
         Article article = articleService.getArticleById(id);
         model.addAttribute("article",article);
-        return "/front/article";
+        return "front/article";
     }
 
     /**

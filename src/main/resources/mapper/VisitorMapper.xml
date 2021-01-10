@@ -10,13 +10,11 @@
     <result column="nickname" jdbcType="VARCHAR" property="nickname" />
     <result column="avatar" jdbcType="VARCHAR" property="avatar" />
     <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="link" jdbcType="VARCHAR" property="link" />
-    <result column="status" jdbcType="TINYINT" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, username, `password`, nickname, avatar, email, link, `status`, create_time, update_time
+    id, username, `password`, nickname, avatar, email, create_time, update_time
   </sql>
 </mapper>

@@ -30,8 +30,8 @@ public class FrontAboutController {
     public ResponseEntity<Object> about(){
         AboutTo aboutTo = new AboutTo();
         aboutTo.setArticleCount(articleService.count());
-        aboutTo.setCategoryCount(categoryService.count());
-        aboutTo.setTagCount(tagService.count());
+        aboutTo.setCategoryCount(categoryService.getCount());
+        aboutTo.setTagCount(tagService.getCount());
         return new ResponseEntity<>(aboutTo, HttpStatus.OK);
     }
 }

@@ -18,10 +18,8 @@
     <result column="top" jdbcType="BIT" property="top" />
     <result column="recommend" jdbcType="BIT" property="recommend" />
     <result column="published" jdbcType="BIT" property="published" />
-    <result column="sort" jdbcType="TINYINT" property="sort" />
     <result column="author_id" jdbcType="BIGINT" property="authorId" />
     <result column="category_id" jdbcType="BIGINT" property="categoryId" />
-    <result column="status" jdbcType="TINYINT" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
@@ -39,23 +37,37 @@
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, title, summary, content, text_content, cover, `type`, views, likes, comments, 
-    commentable, `top`, recommend, published, sort, author_id, category_id,
-    `status`, create_time, update_time
+    commentable, `top`, recommend, published, author_id, category_id,
+     create_time, update_time
   </sql>
     <select id="selectByDate" resultType="com.lloyvet.blog.to.ArticleDateTo">
-      select year(create_time) 'year', month(create_time) 'month', day(create_time) 'day'
-      , count(id) 'articleCount'
-      from t_article
-      where create_time >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
-      and published = 1 and status = 2
-      group by year(create_time)  ,month(create_time) , day(create_time)
+              select year(create_time) 'year', month(create_time) 'month', day(create_time) 'day'
+              , count(id) 'articleCount'
+              from t_article
+              where create_time >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
+              and published = 1
+              group by year(create_time)  ,month(create_time) , day(create_time)
     </select>
-  <select id="selectArticleAndSetCategory"  resultMap="articleSetCategory">
-    SELECT ta.id,title,summary,cover,ta.create_time,tc.id,tc.name
-    FROM t_article ta
-    LEFT JOIN t_category tc
-    ON ta.category_id = tc.id
-    ORDER BY #{condition} DESC
-    LIMIT #{limit},#{size}
-  </select>
+    <select id="selectArticleAndSetCategory" resultMap="articleSetCategory">
+            SELECT ta.id,title,summary,cover,ta.create_time,tc.id,tc.name
+            FROM t_article ta
+            LEFT JOIN t_category tc
+            ON ta.category_id = tc.id
+            ORDER BY ta.create_time DESC
+            LIMIT #{limit},#{size}
+    </select>
+    <select id="selectRecommendReArticleAndSetCategory" resultMap="articleSetCategory">
+        SELECT ta.id,title,summary,cover,ta.create_time,tc.id,tc.name
+        FROM t_article ta
+        LEFT JOIN t_category tc
+        ON ta.category_id = tc.id
+        where ta.recommend = true
+        ORDER BY create_time DESC
+        LIMIT #{limit},#{size}
+    </select>
+
+  <select id="selectCategoryId" resultType="java.lang.Long">
+      select category_id
+      from t_article
+    </select>
 </mapper>

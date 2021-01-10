@@ -39,5 +39,12 @@ public interface CategoryService extends IService<Category> {
      * @return
      */
     Page<Article> listPreviewPageByTagId(Integer current, Integer size, Long id);
+
+    /**
+     * 获取有文章关联的目录
+     * @return
+     */
+    Integer getCount();
+
 }
 

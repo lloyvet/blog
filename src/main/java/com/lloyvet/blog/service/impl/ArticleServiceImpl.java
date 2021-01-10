@@ -14,22 +14,18 @@ import com.lloyvet.blog.mapper.TagMapper;
 import com.lloyvet.blog.to.ArticleDateTo;
 import com.lloyvet.blog.to.ArticleTo;
 import com.lloyvet.blog.to.HomeTo;
-import com.lloyvet.blog.vo.ArticleAuditVo;
+import com.lloyvet.blog.vo.ArticleTopVo;
 import com.lloyvet.blog.vo.ArticleVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
-
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lloyvet.blog.mapper.ArticleMapper;
 import com.lloyvet.blog.domain.Article;
@@ -140,13 +136,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         articleTagMapper.insertBatch(article.getId(), tagIdList);
     }
 
-    @Override
-    public void audit(ArticleAuditVo articleAuditVo) {
-        Article article = new Article();
-        article.setId(articleAuditVo.getId());
-        article.setStatus(articleAuditVo.getStatus());
-        articleMapper.updateById(article);
-    }
 
     @Transactional(rollbackFor = {Exception.class})
     @Override
@@ -174,7 +163,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     public List<Article> selectHotArticle() {
         Page<Article> page = new Page<>(0,3);
         QueryWrapper<Article> qw = new QueryWrapper<>();
-        qw.orderByDesc(Article.COL_VIEWS).select(Article.COL_ID,Article.COL_TITLE,Article.COL_SUMMARY,Article.COL_COVER);
+        qw.eq(Article.COL_TOP,true).select(Article.COL_ID,Article.COL_TITLE,Article.COL_SUMMARY,Article.COL_COVER)
+        .orderByDesc(Article.COL_CREATE_TIME);
         articleMapper.selectPage(page,qw);
         return page.getRecords();
     }
@@ -224,8 +214,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Override
     public List<Article> listRecommend() {
-        //通过likes排序
-        return articleMapper.selectArticleAndSetCategory("likes",0,4);
+        //获取推荐文章
+        return articleMapper.selectRecommendReArticleAndSetCategory(0,4);
     }
 
     @Override
@@ -247,7 +237,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public List<Article> selectListByKeyWord(String keyWord) {
         QueryWrapper<Article> qw = new QueryWrapper<>();
-        qw.like("title",keyWord).or().like("content",keyWord)
+        qw.like("title",keyWord)
         .select(Article.COL_ID,Article.COL_TITLE,Article.COL_SUMMARY,Article.COL_CONTENT);
         List<Article> articles = articleMapper.selectList(qw);
         for (Article article : articles) {
@@ -281,6 +271,13 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         String format1 = sdf.format(date);
         log.info(format1);
         return homeTo;
+    }
+
+    @Override
+    public void isIop(ArticleTopVo articleTopVo) {
+        Article article = articleMapper.selectById(articleTopVo.getId());
+        article.setTop(!article.getTop());
+        articleMapper.updateById(article);
     }
 
 

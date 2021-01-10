@@ -6,17 +6,13 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
-/**
- * @author zihao Shen
- */
 @Data
 @TableName(value = "t_visitor")
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Visitor implements Serializable {
+    public static final String COL_LINK = "link";
+    public static final String COL_STATUS = "status";
     /**
      * ID
      */
@@ -54,18 +50,6 @@ public class Visitor implements Serializable {
     private String email;
 
     /**
-     * 网址
-     */
-    @TableField(value = "link")
-    private String link;
-
-    /**
-     * 启用状态[0:停用, 1:启用]
-     */
-    @TableField(value = "`status`")
-    private Byte status;
-
-    /**
      * 创建时间
      */
     @TableField(value = "create_time")
@@ -90,10 +74,6 @@ public class Visitor implements Serializable {
     public static final String COL_AVATAR = "avatar";
 
     public static final String COL_EMAIL = "email";
-
-    public static final String COL_LINK = "link";
-
-    public static final String COL_STATUS = "status";
 
     public static final String COL_CREATE_TIME = "create_time";
 

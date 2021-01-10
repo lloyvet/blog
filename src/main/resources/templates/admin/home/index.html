@@ -57,7 +57,7 @@
                     <a href="javascript:;" data-check-screen="full"><i class="fa fa-arrows-alt"></i></a>
                 </li>
                 <li class="layui-nav-item layuimini-setting">
-                    <a href="javascript:;" id="username">admin</a>
+                    <a href="javascript:;" th:text="${session.user.nickname}"></a>
                     <dl class="layui-nav-child">
                         <dd>
                             <a href="javascript:;" layuimini-content-href="/admin/page/user/user-setting.html"

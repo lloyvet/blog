@@ -41,4 +41,9 @@ public interface TagService extends IService<Tag>{
      */
     List<Tag> listByArticleCount();
 
+    /**
+     * 获取与文章相关联的标签数量
+     * @return
+     */
+    Integer getCount();
 }

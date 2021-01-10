@@ -6,7 +6,7 @@ import com.lloyvet.blog.domain.Article;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lloyvet.blog.to.ArticleDateTo;
 import com.lloyvet.blog.to.HomeTo;
-import com.lloyvet.blog.vo.ArticleAuditVo;
+import com.lloyvet.blog.vo.ArticleTopVo;
 import com.lloyvet.blog.vo.ArticleVo;
 
 import java.util.List;
@@ -31,13 +31,6 @@ public interface ArticleService extends IService<Article>{
      * @param article
      */
     void saveArticle(Article article);
-
-    /**
-     * 审核文章
-     * @param articleAuditVo
-     */
-    void audit(ArticleAuditVo articleAuditVo);
-
     /**
      * 删除文章和对应的标签关联
      * @param id
@@ -113,4 +106,11 @@ public interface ArticleService extends IService<Article>{
      * @return
      */
     HomeTo getIndexArticle();
+
+    /**
+     * 更新置顶
+     * @param articleTopVo
+     */
+    void isIop(ArticleTopVo articleTopVo);
+
 }

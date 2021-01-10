@@ -29,4 +29,17 @@ public interface ArticleMapper extends BaseMapper<Article> {
      */
     List<Article> selectArticleAndSetCategory(@Param("condition") String condition, @Param("limit") int limit, @Param("size") int size);
 
+    /**
+     * 获取推荐文章
+     * @param limit
+     * @param size
+     * @return
+     */
+    List<Article> selectRecommendReArticleAndSetCategory( @Param("limit") int limit, @Param("size") int size);
+
+    /**
+     * 查询目录id
+     * @return
+     */
+    List<Long> selectCategoryId();
 }

@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 80
 spring:
   application:
     name: blog
@@ -10,7 +10,7 @@ spring:
     cache: false
   datasource: #数据源配置
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://123.56.166.69:3316/blog?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=UTC
+    url: jdbc:mysql://123.56.166.69:3306/blog?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
     username: root
     password: 123456
     druid:
@@ -20,7 +20,7 @@ spring:
       initial-size: 5
       validation-query: select 1
       stat-view-servlet:
-        enabled: true
+#        enabled: true
         #        login-username: admin
         #        login-password: admin
         #        allow:

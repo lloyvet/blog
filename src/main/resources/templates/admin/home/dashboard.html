@@ -174,7 +174,7 @@
                                     <div class="stat-percent font-bold text-gray">
                                         <i class="fa fa-commenting"></i>&nbsp;{{increasedArticles}}
                                     </div>
-                                    <small>当前分类总记录数</small>
+                                    <small>当前文章总记录数</small>
                                 </div>
                             </div>
                         </div>
@@ -192,7 +192,7 @@
                                     <h1 class="no-margins" v-text="viewCount">0</h1>
                                     <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i>&nbsp;{{increasedViews}}
                                     </div>
-                                    <small>当前分类总记录数</small>
+                                    <small>当前浏览总记录数</small>
                                 </div>
                             </div>
                         </div>
@@ -210,7 +210,7 @@
                                     <h1 class="no-margins" id="tag-count" v-text="messageCount">0</h1>
                                     <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i>&nbsp;{{increasedMessages}}
                                     </div>
-                                    <small>当前分类总记录数</small>
+                                    <small>当前留言总记录数</small>
                                 </div>
                             </div>
                         </div>
@@ -227,7 +227,7 @@
                                     <h1 class="no-margins" v-text="commentCount">0</h1>
                                     <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i>&nbsp;{{increasedComments}}
                                     </div>
-                                    <small>当前分类总记录数</small>
+                                    <small>当评论总记录数</small>
                                 </div>
                             </div>
                         </div>
@@ -248,24 +248,11 @@
                                             <div class="panel layui-bg-number">
                                                 <div class="panel-body">
                                                     <div class="panel-title">
-                                                        <h5>用户统计</h5>
-                                                    </div>
-                                                    <div class="panel-content">
-                                                        <h1 class="no-margins" v-text="userCount">0</h1>
-                                                        <small>当前分类总记录数</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="layui-col-xs6">
-                                            <div class="panel layui-bg-number">
-                                                <div class="panel-body">
-                                                    <div class="panel-title">
                                                         <h5>访客统计</h5>
                                                     </div>
                                                     <div class="panel-content">
                                                         <h1 class="no-margins" v-text="visitorCount">0</h1>
-                                                        <small>当前分类总记录数</small>
+                                                        <small>当前访客总记录数</small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -381,190 +368,10 @@
                         </div>
 
                     </div>
-                    <div class="layui-col-md12">
-                        <div class="layui-box">
-                            <div class="layui-row layui-col-space10">
-                                <div class="layui-tab layui-tab-brief">
-                                    <ul class="layui-tab-title">
-                                        <li class="layui-this" permission="sys:accesslog:query">访问日志</li>
-                                        <li permission="sys:operationlog:query">操作日志</li>
-                                        <li permission="blog:comment:query">最新评论</li>
-                                        <li permission="blog:message:query">最新留言</li>
-                                    </ul>
-                                    <div class="layui-tab-content">
-                                        <div class="layui-tab-item layui-show">
-                                            <table class="layui-table" permission="sys:accesslog:query">
-                                                <colgroup>
-                                                    <col width="150">
-                                                    <col width="100">
-                                                    <col width="100">
-                                                    <col width="200">
-                                                    <col width="100">
-                                                </colgroup>
-                                                <thead>
-                                                <tr>
-                                                    <th style="text-align: center">IP</th>
-                                                    <th style="text-align: center">IP来源</th>
-                                                    <th style="text-align: center">时间</th>
-                                                    <th style="text-align: center">描述</th>
-                                                    <th style="text-align: center">访问状态</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr v-for="(log, index) in accessLogs" :key="log.id">
-                                                    <td class="align-center" v-text="log.requestIp">IP</td>
-                                                    <td class="align-center" v-text="log.address">IP来源</td>
-                                                    <td class="align-center">{{log.createTime | dateFormat}}</td>
-                                                    <td class="align-center" v-text="log.description">描述</td>
-                                                    <td class="align-center"><span class="layui-badge"
-                                                                                   :class="setLogClass(log.status)"
-                                                                                   v-text="log.status==1 ? '成功':'失败'">访问状态</span>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="layui-tab-item">
-                                            <div class="layui-tab-item layui-show">
-                                                <table class="layui-table" permission="sys:operationlog:query">
-                                                    <colgroup>
-                                                        <col width="150">
-                                                        <col width="100">
-                                                        <col width="100">
-                                                        <col width="100">
-                                                        <col width="200">
-                                                        <col width="100">
-                                                    </colgroup>
-                                                    <thead>
-                                                    <tr>
-                                                        <th style="text-align: center">IP</th>
-                                                        <th style="text-align: center">IP来源</th>
-                                                        <th style="text-align: center">时间</th>
-                                                        <th style="text-align: center">操作人员</th>
-                                                        <th style="text-align: center">描述</th>
-                                                        <th style="text-align: center">访问状态</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr v-for="(log, index) in operationLogs" :key="log.id">
-                                                        <td class="align-center" v-text="log.requestIp">IP</td>
-                                                        <td class="align-center" v-text="log.address">IP来源</td>
-                                                        <td class="align-center">{{log.createTime | dateFormat}}</td>
-                                                        <td class="align-center" v-text="log.username">操作人员</td>
-                                                        <td class="align-center" v-text="log.description">描述</td>
-                                                        <td class="align-center"><span class="layui-badge"
-                                                                                       :class="setLogClass(log.status)"
-                                                                                       v-text="log.status==1 ? '成功':'失败'">访问状态</span>
-                                                        </td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                        <div class="layui-tab-item">
-                                            <div class="layui-tab-item layui-show">
-                                                <table class="layui-table" permission="blog:comment:query">
-                                                    <colgroup>
-                                                        <col width="100">
-                                                        <col width="200">
-                                                        <col width="100">
-                                                        <col width="100">
-                                                        <col width="100">
-                                                    </colgroup>
-                                                    <thead>
-                                                    <tr>
-                                                        <th style="text-align: center">昵称</th>
-                                                        <th style="text-align: center">内容</th>
-                                                        <th style="text-align: center">时间</th>
-                                                        <th style="text-align: center">文章链接</th>
-                                                        <th style="text-align: center">审核状态</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr v-for="(comment, index) in comments" :key="comment.id">
-                                                        <td class="align-center" v-text="comment.visitor.nickname">昵称
-                                                        </td>
-                                                        <td class="align-center" v-text="comment.content">内容</td>
-                                                        <td class="align-center">{{comment.createTime | dateFormat}}
-                                                        </td>
-                                                        <td class="align-center"><a
-                                                                :href="'/article/'+comment.articleId"
-                                                                v-text="'/article/'+comment.articleId"
-                                                                style="color: #01AAED"
-                                                                target="_blank">文章链接</a>
-                                                        </td>
-                                                        <td class="align-center"><span class="layui-badge"
-                                                                                       :class="setAuditClass(comment.status)"
-                                                                                       v-text="setAuditText(comment.status)">审核状态</span>
-                                                        </td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                        <div class="layui-tab-item">
-                                            <div class="layui-tab-item layui-show">
-                                                <table class="layui-table" permission="blog:message:query">
-                                                    <colgroup>
-                                                        <col width="100">
-                                                        <col width="200">
-                                                        <col width="100">
-                                                        <col width="100">
-                                                    </colgroup>
-                                                    <thead>
-                                                    <tr>
-                                                        <th style="text-align: center">昵称</th>
-                                                        <th style="text-align: center">内容</th>
-                                                        <th style="text-align: center">时间</th>
-                                                        <th style="text-align: center">审核状态</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr v-for="(message, index) in messages" :key="message.id">
-                                                        <td class="align-center" v-text="message.nickname">昵称
-                                                        </td>
-                                                        <td class="align-center" v-text="message.content">内容</td>
-                                                        <td class="align-center">{{message.createTime | dateFormat}}
-                                                        </td>
-                                                        <td class="align-center"><span class="layui-badge"
-                                                                                       :class="setAuditClass(message.status)"
-                                                                                       v-text="setAuditText(message.status)">审核状态</span>
-                                                        </td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layui-col-md12">
-                        <div class="layui-card">
-                            <div class="layui-card-header"><i class="fa fa-line-chart icon"></i>报表统计</div>
-                            <div class="layui-card-body">
-                                <div id="echarts-records" style="width: 100%;min-height:500px"></div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
             <div class="layui-col-md4">
-                <div class="layui-card" permission="sys:notice:query">
-                    <div class="layui-card-header"><i class="fa fa-bullhorn icon icon-tip"></i>系统公告</div>
-                    <div class="layui-card-body layui-text">
-                        <div class="layuimini-notice" v-for="(notice, index) in notices" :key="notice.id">
-                            <div class="layuimini-notice-title">{{notice.title}}</div>
-                            <div class="layuimini-notice-extra">{{notice.createTime}}</div>
-                            <div class="layuimini-notice-content layui-hide">
-                                {{notice.content}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="layui-card" permission="blog:article:query">
                     <div class="layui-card-header"><i class="fa fa-book icon icon-cray"></i>最新文章</div>
                     <div class="layui-card-body">

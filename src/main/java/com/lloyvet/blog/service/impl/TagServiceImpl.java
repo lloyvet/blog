@@ -83,4 +83,9 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
             tag.getArticleCount()!=0).collect(Collectors.toList());
         return tags;
     }
+
+    @Override
+    public Integer getCount() {
+        return null;
+    }
 }

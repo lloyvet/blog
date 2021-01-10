@@ -5,7 +5,7 @@ import com.lloyvet.blog.common.TableResult;
 import com.lloyvet.blog.common.ResultObj;
 import com.lloyvet.blog.domain.Article;
 import com.lloyvet.blog.service.ArticleService;
-import com.lloyvet.blog.vo.ArticleAuditVo;
+import com.lloyvet.blog.vo.ArticleTopVo;
 import com.lloyvet.blog.vo.ArticleVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -80,13 +80,26 @@ public class ArticleController {
     }
 
     /**
-     * 更新审核
-     * @param articleAuditVo
+     * 更新置顶
+     * @param articleTopVo
      * @return
      */
-    @PutMapping("/audit")
-    public ResultObj auditArticle(@RequestBody ArticleAuditVo articleAuditVo){
-        articleService.audit(articleAuditVo);
+    @PutMapping("/isIop")
+    public ResultObj topArticle(@RequestBody ArticleTopVo articleTopVo){
+        articleService.isIop(articleTopVo);
+        return ResultObj.ok();
+    }
+
+    /**
+     * 更新推荐
+     * @param articleTopVo
+     * @return
+     */
+    @PutMapping("/isRecommend")
+    public ResultObj  commentableArticle(@RequestBody ArticleTopVo articleTopVo){
+        Article article = articleService.getById(articleTopVo.getId());
+        article.setRecommend(!article.getRecommend() );
+        articleService.updateById(article);
         return ResultObj.ok();
     }
 
@@ -96,7 +109,6 @@ public class ArticleController {
         article.setTop(article.getTop() != null);
         article.setRecommend(article.getRecommend() != null);
         article.setUpdateTime(new Date());
-        article.setStatus(Constant.AUDIT_WAIT);
         articleService.saveArticle(article);
         return ResultObj.ok();
     }

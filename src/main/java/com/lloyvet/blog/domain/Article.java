@@ -102,11 +102,6 @@ public class Article implements Serializable {
     @TableField(value = "published")
     private Boolean published;
 
-    /**
-     * 排序评分
-     */
-    @TableField(value = "sort")
-    private Byte sort;
 
     /**
      * 作者ID
@@ -122,12 +117,6 @@ public class Article implements Serializable {
 
     @TableField(exist = false)
     private Category category;
-
-    /**
-     * 审核状态[0:审核未过, 1:等待审核, 2:审核通过]
-     */
-    @TableField(value = "`status`")
-    private Byte status;
 
     /**
      * 创建时间

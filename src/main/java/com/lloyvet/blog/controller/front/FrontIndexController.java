@@ -28,7 +28,7 @@ public class FrontIndexController {
 
     @GetMapping({"/","index","index.html"})
     public String index(){
-        return "/front/index";
+        return "front/index";
     }
 
     /**
@@ -38,11 +38,16 @@ public class FrontIndexController {
     @GetMapping("/home")
     public ResponseEntity<Object> home() {
         HomeTo homeTo = articleService.getIndexArticle();
-
         return new ResponseEntity<>(homeTo, HttpStatus.OK);
 
     }
 
+    /**
+     * 分页查询文章
+     * @param current
+     * @param size
+     * @return
+     */
     @GetMapping("/articles")
     public ResponseEntity<Object> articles(@RequestParam(value = "current", defaultValue = "1") Integer current,
                                            @RequestParam(value = "size", defaultValue = "6") Integer size) {

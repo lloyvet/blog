@@ -5,13 +5,16 @@ import cn.hutool.captcha.LineCaptcha;
 import com.lloyvet.blog.common.Constant;
 import com.lloyvet.blog.common.MenuTreeNode;
 import com.lloyvet.blog.common.ResultObj;
+import com.lloyvet.blog.domain.Article;
 import com.lloyvet.blog.domain.Menu;
 import com.lloyvet.blog.domain.User;
-import com.lloyvet.blog.service.MenuService;
-import com.lloyvet.blog.service.UserService;
+import com.lloyvet.blog.service.*;
+import com.lloyvet.blog.to.IndexTo;
 import com.lloyvet.blog.to.UserTo;
 import com.lloyvet.blog.vo.InitInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,6 +40,14 @@ public class LoginController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    ArticleService articleService;
+
+    @Autowired
+    CategoryService categoryService;
+
+    @Autowired
+    TagService tagService;
     /**
      * 跳转登录页面
      * @return
@@ -76,6 +87,23 @@ public class LoginController {
             request.getSession().setAttribute(Constant.USER,user);
             return new ResultObj(1,"登录成功");
         }
+    }
+    /**
+     * 查询控制面板数据
+     */
+    @ResponseBody
+    @GetMapping("/indexData")
+    public ResponseEntity<Object> indexData() {
+        IndexTo indexTo = new IndexTo();
+        indexTo.setArticleCount((long) articleService.count());
+        indexTo.setArticles(articleService.listRecommend());
+        indexTo.setCategoryCount((long) categoryService.count());
+        indexTo.setTagCount((long) tagService.count());
+        indexTo.setViewCount(0);
+        indexTo.setMessageCount(0);
+        indexTo.setCommentCount(0);
+        indexTo.setVisitorCount(0);
+        return new ResponseEntity<>(indexTo, HttpStatus.OK);
     }
 
 
