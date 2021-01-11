@@ -7,6 +7,7 @@ import com.lloyvet.blog.common.ResultObj;
 import com.lloyvet.blog.common.TableResult;
 import com.lloyvet.blog.domain.ArticleTag;
 import com.lloyvet.blog.mapper.ArticleTagMapper;
+import com.lloyvet.blog.to.ArticleTagTo;
 import com.lloyvet.blog.to.TagTo;
 import com.lloyvet.blog.vo.TagVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +87,7 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
 
     @Override
     public Integer getCount() {
-        return null;
+        List<ArticleTagTo> articleTagTos = articleTagMapper.selectTagCount();
+        return articleTagTos.size();
     }
 }

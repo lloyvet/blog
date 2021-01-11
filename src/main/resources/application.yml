@@ -29,6 +29,9 @@ spring:
       web-stat-filter:
         enabled: true
         url-pattern: "/druid/**"
+  mvc:
+    favicon:
+      enabled: false
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

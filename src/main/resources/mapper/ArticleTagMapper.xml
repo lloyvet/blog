@@ -19,4 +19,10 @@
         (#{id},#{tagId})
       </foreach>
     </insert>
+
+  <select id="selectTagCount" resultType="com.lloyvet.blog.to.ArticleTagTo">
+
+          SELECT COUNT(*) as count ,tag_id
+          FROM t_article_tag
+  </select>
 </mapper>
