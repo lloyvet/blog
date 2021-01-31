@@ -25,6 +25,6 @@ public interface ArticleTagMapper extends BaseMapper<ArticleTag> {
      * 获取文章相关联标签数量
      * @return
      */
-    List<ArticleTagTo> selectTagCount();
+    List<Long> selectTagCount();
 
 }

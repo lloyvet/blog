@@ -4,13 +4,13 @@ spring:
   application:
     name: blog
   redis:
-    host: 123.56.166.69
+    host: localhost
     port: 6379
   thymeleaf:
     cache: false
   datasource: #数据源配置
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://123.56.166.69:3306/blog?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
+    url: jdbc:mysql://localhost:3306/blog?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
     username: root
     password: 123456
     druid:
@@ -32,6 +32,16 @@ spring:
   mvc:
     favicon:
       enabled: false
+  mail:
+    username: localhost@qq.com
+    password: localhost
+    host: smtp.qq.com
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
+
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

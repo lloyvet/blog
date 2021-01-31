@@ -9,6 +9,12 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.stream.Collectors;
+
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lloyvet.blog.domain.Comment;
 import com.lloyvet.blog.mapper.CommentMapper;
@@ -26,6 +32,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     @Autowired
     VisitorMapper visitorMapper;
 
+    @Autowired
+    ThreadPoolExecutor poolExecutor;
+
     @Override
     public Page<Comment> listByArticleId(Long articleId, Integer current, Integer size) {
         Page<Comment> page = new Page<>(current, size);
@@ -35,45 +44,60 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         List<Comment> allComments = commentMapper.selectList(qw);
         //根据id分页查询顶级评论
         qw.eq("pid",0);
-        page = commentMapper.selectPage(page,qw);
-        List<Comment> resultComments = getResultComments(page.getRecords(),allComments);
-        page.setRecords(resultComments);
+        commentMapper.selectPage(page,qw);
+        //设置每条评论的评论者
+        CompletableFuture<Void> task1 = CompletableFuture.runAsync(() -> {
+            //查询所有访客
+            QueryWrapper<Visitor> vQw = new QueryWrapper<>();
+            vQw.select(Visitor.COL_ID,Visitor.COL_NICKNAME,Visitor.COL_AVATAR);
+            List<Visitor> allVisitor = visitorMapper.selectList(vQw);
+            //设置每条评论的评论者
+            for (Comment comment : allComments) {
+                for (Visitor visitor : allVisitor) {
+                    if (comment.getVisitorId() == visitor.getId()) {
+                        comment.setVisitor(visitor);
+                    }
+                }
+            }
+            //设置分页中父id为0的visitor
+            List<Comment> pidList = allComments.stream().filter(comment -> comment.getPid() == 0L).collect(Collectors.toList());
+            for (Comment record : page.getRecords()) {
+                for (Comment comment : pidList) {
+                    if(record.getId() == comment.getId()){
+                        record.setVisitor(comment.getVisitor());
+                    }
+                }
+            }
+        }, poolExecutor);
+        //设置每条评论的子评论
+        CompletableFuture<Void> task2 = CompletableFuture.runAsync(() -> {
+            for (Comment parent : page.getRecords()) {
+                List<Comment> children = new ArrayList<>();
+                setChildrenComment(parent, children, allComments);
+                parent.setChildren(children);
+            }
+        }, poolExecutor);
+        try {
+            CompletableFuture.allOf(task1,task2).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         return page;
     }
 
-    private List<Comment> getResultComments(List<Comment> records, List<Comment> allComments) {
-        List<Comment> res = new ArrayList<>();
-        for (Comment parent : records) {
-            //设置visitor
-            QueryWrapper<Visitor> qwV = new QueryWrapper<>();
-            qwV.eq("id",parent.getVisitorId()).select(Visitor.COL_ID,Visitor.COL_NICKNAME,Visitor.COL_AVATAR,Visitor.COL_LINK);
-            Visitor visitor = visitorMapper.selectOne(qwV);
-            parent.setVisitor(visitor);
-            //设置子回复
-            List<Comment> children = new ArrayList<>();
-            findCommentChildren(parent,children,allComments);
-            parent.setChildren(children);
-            res.add(parent);
-        }
-        return res;
-    }
-
     /**
-     * 递归查询子评论
+     * 设置子评论
      * @param parent
      * @param children
      * @param allComments
      */
-    private void findCommentChildren(Comment parent, List<Comment> children, List<Comment> allComments) {
+    private void setChildrenComment(Comment parent, List<Comment> children, List<Comment> allComments) {
         for (Comment comment : allComments) {
-            //设置visitor
-            QueryWrapper<Visitor> qwV = new QueryWrapper<>();
-            qwV.eq("id",comment.getVisitorId()).select(Visitor.COL_ID,Visitor.COL_NICKNAME,Visitor.COL_AVATAR,Visitor.COL_LINK);
-            Visitor visitor = visitorMapper.selectOne(qwV);
-            comment.setVisitor(visitor);
-            if(parent.getId().equals(comment.getPid())){
+            if(parent.getId()==comment.getPid()){
                 children.add(comment);
-                findCommentChildren(comment,children,allComments);
+                setChildrenComment(comment,children,allComments);
             }
         }
     }

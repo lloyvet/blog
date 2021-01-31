@@ -13,8 +13,8 @@ public class BlogThreadConfig {
 
     @Bean
     public ThreadPoolExecutor threadPoolExecutor(){
-        return new ThreadPoolExecutor(20,200,
-                10, TimeUnit.SECONDS,new LinkedBlockingQueue<>(1000*10)
+        return new ThreadPoolExecutor(4,8,
+                10, TimeUnit.SECONDS,new LinkedBlockingQueue<>(100)
                 , Executors.defaultThreadFactory(),new ThreadPoolExecutor.AbortPolicy());
     }
 }

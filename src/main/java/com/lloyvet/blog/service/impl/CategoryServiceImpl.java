@@ -82,8 +82,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     @Override
     public Integer getCount() {
         List<Long> categoryIds = articleMapper.selectCategoryId();
-        List<Category> categories = categoryMapper.selectBatchIds(categoryIds);
-        return categories.size();
+        return categoryIds.size();
     }
 }
 

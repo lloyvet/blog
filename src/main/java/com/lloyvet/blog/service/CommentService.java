@@ -3,6 +3,9 @@ package com.lloyvet.blog.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lloyvet.blog.domain.Comment;
 import com.baomidou.mybatisplus.extension.service.IService;
+/**
+ * @author zihao Shen
+ */
 public interface CommentService extends IService<Comment>{
 
 

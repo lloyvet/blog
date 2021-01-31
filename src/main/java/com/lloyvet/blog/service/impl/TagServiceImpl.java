@@ -3,6 +3,7 @@ package com.lloyvet.blog.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lloyvet.blog.common.Constant;
 import com.lloyvet.blog.common.ResultObj;
 import com.lloyvet.blog.common.TableResult;
 import com.lloyvet.blog.domain.ArticleTag;
@@ -11,6 +12,8 @@ import com.lloyvet.blog.to.ArticleTagTo;
 import com.lloyvet.blog.to.TagTo;
 import com.lloyvet.blog.vo.TagVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,6 +35,9 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
 
     @Autowired
     ArticleTagMapper articleTagMapper;
+
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @Override
     public ResultObj selectTagList(Integer page, Integer limit, TagVo tagVo) {
@@ -73,6 +79,7 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
         return tagMapper.selectList(qw);
     }
 
+
     @Override
     public List<Tag> listByArticleCount() {
         List<Tag> tags = this.list();
@@ -87,7 +94,7 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
 
     @Override
     public Integer getCount() {
-        List<ArticleTagTo> articleTagTos = articleTagMapper.selectTagCount();
+        List<Long> articleTagTos = articleTagMapper.selectTagCount();
         return articleTagTos.size();
     }
 }

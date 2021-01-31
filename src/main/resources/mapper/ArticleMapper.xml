@@ -67,7 +67,7 @@
     </select>
 
   <select id="selectCategoryId" resultType="java.lang.Long">
-      select category_id
-      from t_article
+      SELECT category_id FROM t_article
+      GROUP BY category_id;
     </select>
 </mapper>

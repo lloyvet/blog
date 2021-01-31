@@ -1,6 +1,5 @@
 package com.lloyvet.blog.controller.front;
 
-import cn.hutool.core.date.DateUtil;
 import com.lloyvet.blog.service.ArticleService;
 import com.lloyvet.blog.service.CategoryService;
 import com.lloyvet.blog.service.TagService;
@@ -11,8 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * @author zihao Shen
+ */
 @Controller
 @RequestMapping
 public class FrontAboutController {

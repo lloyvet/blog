@@ -6,13 +6,18 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
+/**
+ * @author zihao Shen
+ */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
 @TableName(value = "t_visitor")
 public class Visitor implements Serializable {
-    public static final String COL_LINK = "link";
-    public static final String COL_STATUS = "status";
+
     /**
      * ID
      */

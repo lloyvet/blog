@@ -31,7 +31,6 @@ public class AccessLogServiceImpl extends ServiceImpl<AccessLogMapper, AccessLog
         AccessLogs aopLogs = (AccessLogs) method.getAnnotation(AccessLogs.class);
         // 方法路径
         String methodName = joinPoint.getTarget().getClass().getName() + "." + signature.getName() + "()";
-
         StringBuilder params = new StringBuilder("{");
         //参数值
         Object[] argValues = joinPoint.getArgs();

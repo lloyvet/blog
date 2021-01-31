@@ -12,6 +12,9 @@ public class Constant {
 
     public static final String LOGO_IMAGE = "/static/admin/layuimini/images/logo.png";
     public static final String USER = "user";
+    public static final String VISITOR = "visitor";
+
+    public static final String COMMENTCALL = "comment:replay";
     /**
      * 默认颜色
      */
@@ -62,5 +65,9 @@ public class Constant {
 
     public static final String REGION = "内网IP|内网IP";
 
+    public static final String ARTICLE_COUNT = "blog_article_count";
+
+
+    public static final String DEFAULT_AVATAR = "https://gravatar.loli.net/avatar/f2c02ce7474e4b228a576f7e47f00bd1?d=mp&v=1.3.10";
 
 }

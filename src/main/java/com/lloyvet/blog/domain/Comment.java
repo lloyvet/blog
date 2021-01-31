@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
@@ -16,12 +17,12 @@ import lombok.Data;
  */
 @Data
 @TableName(value = "t_comment")
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties("handler")
 public class Comment implements Serializable {
     /**
      * id
      */
-    @TableId(value = "id", type = IdType.INPUT)
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
