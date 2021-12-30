@@ -1,16 +1,22 @@
 server:
-  port: 80
+  port: 8090
 spring:
   application:
-    name: blog
+    name: hospital
   redis:
-    host: localhost
+    host: 123.56.166.69
     port: 6379
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT%2B8
   thymeleaf:
     cache: false
+  devtools:
+    livereload:
+      enabled: true
   datasource: #数据源配置
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/blog?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
+    url: jdbc:mysql://123.56.166.69:3306/hospital?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
     username: root
     password: 123456
     druid:
@@ -33,8 +39,8 @@ spring:
     favicon:
       enabled: false
   mail:
-    username: localhost@qq.com
-    password: localhost
+    username: 1924143976@qq.com
+    password: qyhewiffdbvofbge
     host: smtp.qq.com
     properties:
       mail:

@@ -26,17 +26,10 @@
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <label class="layui-form-label">邮箱</label>
+                            <label class="layui-form-label">手机号</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="email" autocomplete="off" class="layui-input"
+                                <input type="text" name="phone" autocomplete="off" class="layui-input"
                                        placeholder="不输入则忽略邮箱筛选">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">日期范围</label>
-                            <div class="layui-input-inline">
-                                <input type="text" class="layui-input" id="date-range" placeholder="不输入则忽略日期范围筛选"
-                                       name="dateRange">
                             </div>
                         </div>
                         <div class="layui-inline">
@@ -62,6 +55,7 @@
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
         <script type="text/html" id="currentTableBar">
+<!--            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="editor">编辑</a>-->
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
         </script>
 
@@ -88,7 +82,7 @@
 
         table.render({
             elem: '#currentTableId',
-            url: '/admin/visitor/list',
+            url: '/admin/visitor/getAllVisitor',
             toolbar: '#toolbarDemo',
             defaultToolbar: ['filter', 'exports', 'print', {
                 title: '提示',
@@ -101,12 +95,11 @@
                     {field: 'id', width: 80, title: 'ID', sort: true},
                     {field: 'username', width: 150, title: '用户名', sort: true},
                     {field: 'nickname', width: 150, title: '昵称'},
-                    {field: 'email', width: 150, title: '邮箱'},
-                    {field: 'createTime', title: '创建时间', minWidth: 200, sort: true},
-                    {field: 'updateTime', title: '更新时间', minWidth: 200, sort: true},
+                    {field: 'phone', width: 150, title: '手机号'},
+                    {field: 'createTime', title: '注册时间', minWidth: 180, sort: true},
                     {
                         title: '操作',
-                        minWidth: 150,
+                        minWidth: 110,
                         toolbar: '#currentTableBar',
                         fixed: "right",
                         align: "center",
@@ -120,23 +113,16 @@
 
         // 监听搜索操作
         form.on('submit(data-search-btn)', function (data) {
-            let username = data.field.username;
-            let email = data.field.email;
-            let dateRange = data.field.dateRange;
-            let dates = dateRange.split(' ~ ')
-            let startDate = dates[0];
-            let endDate = dates[1];
-
+            let username = data.field.userName;
+            let phone = data.field.phone;
             //执行搜索重载
             table.reload('currentTableId', {
                 page: {
                     curr: 1
                 }
                 , where: {
-                    username: username,
-                    email: email,
-                    startDate: startDate,
-                    endDate: endDate
+                    userName: username,
+                    phone: phone
                 }
             }, 'data');
 
@@ -253,7 +239,7 @@
             var data = obj.data;
             if (obj.event === 'delete') {
                 Swal.fire({
-                    title: '确定删除选中的这个访客吗？',
+                    title: '确定删除选中的这个用户吗？',
                     text: '你将无法恢复它！',
                     icon: 'warning',
                     showCancelButton: true,

@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.lloyvet</groupId>
-    <artifactId>blog</artifactId>
+    <artifactId>hospital</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>blog</name>
-    <description>博客</description>
+    <name>hospital</name>
+    <description>社区医院</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -26,6 +26,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId></groupId>
+            <artifactId>wei</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -98,8 +102,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -110,6 +112,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.9</version>
         </dependency>
     </dependencies>
 

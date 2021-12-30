@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lloyvet.blog.mapper.MenuMapper">
-  <resultMap id="BaseResultMap" type="com.lloyvet.blog.domain.Menu">
+<mapper namespace="com.lloyvet.hospital.mapper.MenuMapper">
+  <resultMap id="BaseResultMap" type="com.lloyvet.hospital.domain.Menu">
     <!--@mbg.generated-->
-    <!--@Table sys_menu-->
+    <!--@Table his_menu-->
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="href" jdbcType="VARCHAR" property="href" />
@@ -16,10 +16,11 @@
     <result column="target" jdbcType="VARCHAR" property="target" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="user_type" jdbcType="INTEGER" property="userType" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, title, href, pid, icon,sort, `type`, `status`, remark, target, create_time,
-    update_time
+    id, title, href, pid, icon, sort, `type`, `status`, remark, target, create_time, 
+    update_time, user_type
   </sql>
 </mapper>
